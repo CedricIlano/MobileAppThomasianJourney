@@ -107,17 +107,19 @@ public class RegisterSecondLoading extends AppCompatActivity {
 						int studentsIdToPass;
 						String verificationCodeToPass;
 
-						if (dataObject.get("studEmail") != null) {
-							emailAddressToPass = dataObject.get("studEmail").getAsString();
+						if (dataObject.get("studregEmail") != null) {
+							emailAddressToPass = dataObject.get("studregEmail").getAsString();
 
-							if (dataObject.get("studMobileNumber") != null) {
-								mobileNumberToPass = dataObject.get("studMobileNumber").getAsString();
+							if (dataObject.get("studregmobileNum") != null) {
+								mobileNumberToPass =
+										dataObject.get("studregmobileNum").getAsString();
 
 								if (dataObject.get("studentsId") != null) {
 									studentsIdToPass = dataObject.get("studentsId").getAsInt();
 
-									if (dataObject.get("numberCode") != null) {
-										verificationCodeToPass = dataObject.get("numberCode").getAsString();
+									if (dataObject.get("numbercode") != null) {
+										verificationCodeToPass =
+												dataObject.get("numbercode").getAsString();
 
 										Intent intent = new Intent(RegisterSecondLoading.this, RegisterSuccess.class);
 										intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddressToPass);
@@ -157,13 +159,15 @@ public class RegisterSecondLoading extends AppCompatActivity {
 				Toast.makeText(this, "Code is incorrect", Toast.LENGTH_SHORT).show();
 				toRegisterSecond();
 			}
+		} else {
+			Toast.makeText(this, "Error, please try again.", Toast.LENGTH_SHORT).show();
+			toRegisterSecond();
 		}
 	}
-
 	private void toRegisterSecond() {
 		Intent intent = new Intent(RegisterSecondLoading.this, RegisterSecond.class);
-		intent.putExtra("email", mEmail);
-		intent.putExtra("registerFirst_mobileNumber", mMobile);
+		intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, mEmail);
+		intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mMobile);
 		startActivity(intent);
 		finish();
 	}

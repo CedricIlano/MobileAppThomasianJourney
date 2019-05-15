@@ -72,9 +72,9 @@ public class Tab2 extends Fragment {
 
         dialog = new ProgressDialog(getContext());
 
-        String collegeId = "1";
-        String yearLevel = "1";
-        String accountId = "1";
+        String collegeId = "2";
+        String yearLevel = "2";
+        String accountId = "2";
         Tab2.OkHttpHandler okHttpHandler = new Tab2.OkHttpHandler();
         //DITO PAPASOK YUNG ID NG EVENT SA VIEW EVENTS
 
@@ -168,9 +168,6 @@ public class Tab2 extends Fragment {
                     mRecyclerViewAdapter = new RecyclerViewAdapter(getContext(),listContact);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
-
-
-
                 }
 
             }catch(Exception err){

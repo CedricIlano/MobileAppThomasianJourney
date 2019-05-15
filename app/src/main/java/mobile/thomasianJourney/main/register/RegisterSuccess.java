@@ -92,9 +92,9 @@ public class RegisterSuccess extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("emailAddress", emailAddress);
-        editor.putString("mobileNumber", mobileNumber);
-        editor.putInt("studentsId", studentsId);
+        editor.putString(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddress);
+        editor.putString(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumber);
+        editor.putInt(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsId);
 
         editor.apply();
     }

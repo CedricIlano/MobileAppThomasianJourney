@@ -27,9 +27,9 @@ public class RegisterFirst extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_first_layout);
 
+
 		intializeViews();
 	}
-
 	private void intializeViews() {
 
 		// StepView initialization

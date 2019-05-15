@@ -97,17 +97,33 @@ public class RegisterFirstLoading extends AppCompatActivity {
 
 					JsonObject dataObject = jsonObject.get("data").getAsJsonObject();
 
-					String emailAddress = dataObject.get("studEmail").getAsString();
-					String mobileNumber = dataObject.get("studMobileNumber").getAsString();
-					int studentsId = dataObject.get("studentsId").getAsInt();
+					if (dataObject != null) {
+						if (dataObject.has("studEmail") && dataObject.has("studMobileNumber") && dataObject.has("studentsId")) {
+							String emailAddress = dataObject.get("studEmail").getAsString();
+							String mobileNumber = dataObject.get("studMobileNumber").getAsString();
+							int studentsId = dataObject.get("studentsId").getAsInt();
 
-					Intent intent = new Intent(RegisterFirstLoading.this, RegisterSecond.class);
-					intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddress);
-					intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumber);
-					intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsId);
+							Intent intent = new Intent(RegisterFirstLoading.this, RegisterSecond.class);
+							intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddress);
+							intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumber);
+							intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsId);
 
-					startActivity(intent);
-					finish();
+							startActivity(intent);
+							finish();
+						} else {
+							Toast.makeText(this, "Incomplete data found. Please try again",
+									Toast.LENGTH_SHORT).show();
+							Intent intent = new Intent(RegisterFirstLoading.this, RegisterFirst.class);
+							startActivity(intent);
+							finish();
+						}
+					} else {
+						Toast.makeText(this, "No data found. Please try again",
+								Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(RegisterFirstLoading.this, RegisterFirst.class);
+						startActivity(intent);
+						finish();
+					}
 				} else {
 					Toast.makeText(this, "Invalid email address", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(RegisterFirstLoading.this, RegisterFirst.class);
@@ -122,6 +138,12 @@ public class RegisterFirstLoading extends AppCompatActivity {
 				startActivity(intent);
 				finish();
 			}
+		} else {
+			Toast.makeText(this, "Request timeout, please try again.",
+					Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(RegisterFirstLoading.this, RegisterFirst.class);
+			startActivity(intent);
+			finish();
 		}
 	}
 }

@@ -34,12 +34,13 @@
         android:roundIcon="@drawable/tjlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="ramos.pat.com.vieweventsfragments.GPSActivate"></activity>
         <activity
             android:name="mobile.thomasianJourney.main.MenuPortfolio"
             android:label="View Portfolio"
             android:parentActivityName="mobile.thomasianJourney.main.SecondActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name="mobile.thomasianJourney.main.register.RegisterFirstLoading"
             android:screenOrientation="portrait" />
@@ -86,8 +87,6 @@
             android:parentActivityName="mobile.thomasianJourney.main.MenuPortfolio"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
-
         <activity
             android:name="mobile.thomasianJourney.main.EventDetails"
             android:label="Event Details"

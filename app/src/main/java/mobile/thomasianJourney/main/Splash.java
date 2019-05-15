@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import mobile.thomasianJourney.main.register.RegisterFirst;
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 
 public class Splash extends AppCompatActivity {
@@ -39,9 +40,12 @@ public class Splash extends AppCompatActivity {
 
     public boolean isSharedPreferencesPresent() {
 
-        SharedPreferences sharedPreferences = getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main" +
+                ".register.USER_CREDENTIALS", Context.MODE_PRIVATE);
 
-        return sharedPreferences.contains("email") && sharedPreferences.contains("mobile") && sharedPreferences.contains("studentsId");
+        return sharedPreferences.contains(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS) &&
+                sharedPreferences.contains(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER) &&
+                sharedPreferences.contains(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID);
 
     }
 }

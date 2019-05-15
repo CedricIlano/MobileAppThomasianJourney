@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import mobile.thomasianJourney.main.register.RegisterFirst;
 import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
@@ -28,7 +29,9 @@ public class Splash extends AppCompatActivity {
         Animation myanim = AnimationUtils.loadAnimation(this,R.anim.mytransition);
         tv.startAnimation(myanim);
         iv.startAnimation(myanim);
+        FirebaseMessaging.getInstance().subscribeToTopic("test");
         FirebaseInstanceId.getInstance().getToken();
+
         Intent intent;
 
         if (isSharedPreferencesPresent()) {

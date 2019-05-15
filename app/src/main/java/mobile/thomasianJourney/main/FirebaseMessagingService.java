@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -22,6 +23,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     private void showNotification(String Heading, String message){
         Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Log.i("contains = ",Heading+" and "+message);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0,i,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)

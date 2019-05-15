@@ -42,6 +42,9 @@ public class VerifyLoginCred extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getExtras().getString("activityId");
         i.putExtra("activityId", id);
+
+
+
         Thread timer = new Thread() {
             public void run () {
                 try {

@@ -24,8 +24,11 @@ public class RegisterSecondAsync extends AsyncTask<String, Void, String> {
 	protected String doInBackground(String... strings) {
 		try {
 			RequestBody requestBody =
-					new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("numbercode", strings[0]).addFormDataPart("studentsId",
-							strings[1]).build();
+					new MultipartBody.Builder().
+							setType(MultipartBody.FORM).
+							addFormDataPart("numbercode", strings[0]).
+							addFormDataPart("studentsId", strings[1]).
+							build();
 
 			Request.Builder builder = new Request.Builder();
 			builder.url(strings[2]).post(requestBody);

@@ -10,6 +10,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,8 +19,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -26,6 +32,10 @@ import java.util.Calendar;
 import mobile.thomasianJourney.main.EventDetails;
 import mobile.thomasianJourney.main.MainActivity;
 import mobile.thomasianJourney.main.MenuPortfolio;
+import mobile.thomasianJourney.main.interfaces.AsyncResponse;
+import mobile.thomasianJourney.main.register.async.RegisterFirstAsync;
+import mobile.thomasianJourney.main.register.async.StudentDetails;
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 
 
@@ -43,7 +53,7 @@ public class SecondActivity extends AppCompatActivity {
 
     LinearLayout layouthelp;
 
-    TextView home_studentNumber, home_totalPoints, home_currentDate;
+    TextView home_studentNumber, home_totalPoints, home_currentDate, home_Welcome;
     Dialog dialog_help;
     ImageView closeDialogHelp;
 
@@ -60,13 +70,104 @@ public class SecondActivity extends AppCompatActivity {
         home_studentNumber = findViewById(R.id.home_studentNumber);
         home_totalPoints = findViewById(R.id.home_totalPoints);
         home_currentDate = findViewById(R.id.home_currentDate);
+        home_Welcome = findViewById(R.id.studname);
+
+        Intent intent = getIntent();
 
         home_studentNumber.setText(getStudentId() + "");
         home_totalPoints.setText("xx.xx");
         home_currentDate.setText(DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().getTime()));
 
 
+        SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main" +
+                ".register.USER_CREDENTIALS", Context.MODE_PRIVATE);
+        //SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+        if (sharedPreferences != null) {
+            //String email = intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS);
+//            String studentId = intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID);
+            int studentId = sharedPreferences.getInt(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, 0);
+
+
+            AsyncResponse asyncResponse = new AsyncResponse() {
+                @Override
+                public void doWhenFinished(String output) {
+                    verifyCredentials(output);
+                }
+            };
+
+            //RegisterFirstAsync registerFirstAsync = new RegisterFirstAsync(asyncResponse);
+
+            StudentDetails studentDetails = new StudentDetails(asyncResponse);
+            Log.i("asdajs","details =  "+getString(R.string.studentDetails)+" : "+ studentId);
+            Log.i("asdajs","studId =   "+ studentId);
+            studentDetails.execute(studentId+"", getString(R.string.studentDetails));
+        }
+
+
     }
+
+    public void verifyCredentials(String s) {
+
+        if (!TextUtils.isEmpty(s)) {
+            Gson gson = new Gson();
+
+            JsonObject jsonObject;
+
+            try {
+                jsonObject = gson.fromJson(s, JsonObject.class);
+
+                if (jsonObject.has("data")) {
+
+                    JsonObject dataObject = jsonObject.get("data").getAsJsonObject();
+
+                    if (dataObject != null) {
+                        if (dataObject.has("studregEmail") && dataObject.has("studregmobileNum") && dataObject.has("studentsId")) {
+                            String emailAddress = dataObject.get("studregEmail").getAsString();
+                            String mobileNumber = dataObject.get("studregmobileNum").getAsString();
+                            int studentsId = dataObject.get("studNumber").getAsInt();
+                            int studPoints = dataObject.get("studPoints").getAsInt();
+                            String studname = dataObject.get("studregName").getAsString();
+
+                            home_studentNumber.setText("Student Number: "+studentsId + "");
+                            home_totalPoints.setText("Accumulated Point/s: "+studPoints+"");
+                            home_Welcome.setText("Welcome, "+studname);
+
+/*
+                            Intent intent = new Intent(RegisterFirstLoading.this, RegisterSecond.class);
+                            intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddress);
+                            intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumber);
+                            intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsId);
+*/
+                        } else {
+                            Toast.makeText(this, "null json",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, "No data",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "No object",
+                    Toast.LENGTH_SHORT).show();
+                }
+            } catch (JsonSyntaxException e) {
+                //Toast.makeText(this, "Json Syntax",
+                        //Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+           Toast.makeText(this, "Cannot find Student Details",
+                    Toast.LENGTH_SHORT).show();
+            //Intent intent = new Intent(SecondActivity.this, SecondActivity.class);
+            //startActivity(intent);
+            //finish();
+
+        }
+    }
+
+
     private int getStudentId() {
 
         SharedPreferences sharedPreferences = getSharedPreferences("sp", Context.MODE_PRIVATE);

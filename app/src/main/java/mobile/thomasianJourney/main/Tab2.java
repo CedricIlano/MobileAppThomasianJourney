@@ -171,9 +171,10 @@ public class Tab2 extends Fragment {
                 }
 
             }catch(Exception err){
-                mRecyclerView.setVisibility(View.GONE);
-                empty = getActivity().findViewById(R.id.empty);
-                empty.setVisibility(View.VISIBLE);
+                //mRecyclerView.setVisibility(View.GONE);
+                //empty = getActivity().findViewById(R.id.empty);
+                //empty.setVisibility(View.VISIBLE);
+                //View.
             }
         }
 

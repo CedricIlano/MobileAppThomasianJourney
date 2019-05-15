@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -425,8 +426,8 @@ public class EventDetails extends AppCompatActivity {
                     String splittedTime = startTime.split(":")[0] + ":" + startTime.split(":")[1];
                     String splittedEndTime = endTime.split(":")[0] + ":" + endTime.split(":")[1];
                     DateFormat dfTime = new SimpleDateFormat("hh:mm a");
-                    java.time.format.DateTimeFormatter target = java.time.format.DateTimeFormatter.ofPattern("h:mm a");
-                    java.time.format.DateTimeFormatter source = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
+                    SimpleDateFormat target = new SimpleDateFormat("h:mm a");
+                    SimpleDateFormat source = new SimpleDateFormat("HH:mm");
                     String formattedTime = target.format(source.parse(splittedTime));
                     String formattedEndTime = target.format(source.parse(splittedEndTime));
 

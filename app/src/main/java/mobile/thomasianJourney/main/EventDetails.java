@@ -47,7 +47,7 @@ public class EventDetails extends AppCompatActivity {
     private OkHttpClient client;
     private Button btnAttend;
     Dialog dialog_help;
-    ImageView closeDialogHelp;
+    ImageView closeDialogHelp, img_help;
     TextView txtContent1, txtContent2, txtContent3, txtContent4, txtContent5, txtContent6;
     Animation animationUp, animationUp1, animationUp2, animationUp3, animationUp4,animationUp5, animationUp6;
     Animation animationDown, animationDown1, animationDown2, animationDown3, animationDown4, animationDown5, animationDown6 ;
@@ -88,8 +88,17 @@ public class EventDetails extends AppCompatActivity {
 //                openVerifyLoginCred();
 //            }
 //        });
+        img_help = (ImageView) findViewById(R.id.img_help);
+        img_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialogHelp();
+            }
+        });
 
         dialog_help = new Dialog(this);
+
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);

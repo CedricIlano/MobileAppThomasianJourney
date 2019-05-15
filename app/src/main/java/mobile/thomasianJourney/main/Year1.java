@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class Year1 extends Fragment {
         Intent i = getActivity().getIntent();
         String yearLevel = i.getExtras().getString("yearLevel");
         String[] tabs = i.getExtras().getStringArray("emptytab"+yearLevel);
+        Log.i("ok","tabs = "+tabs.toString());
 //        Toast.makeText(getContext(), "Empty Tab:"+tabs[0], Toast.LENGTH_SHORT).show();
         View rootView;
         if(tabs[0].equals("false")){

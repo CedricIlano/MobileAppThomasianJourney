@@ -161,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
     // list view adapter
 
     class MyAdapter extends ArrayAdapter<String> {
@@ -270,21 +273,6 @@ public class MainActivity extends AppCompatActivity {
     public void ShowDialogHelp() {
         dialog_help.setContentView(R.layout.dialog_help);
         closeDialogHelp = (ImageView) dialog_help.findViewById(R.id.closeDialogHelp);
-//        title_text1 = (TextView) dialog_help.findViewById(R.id.title_text1);
-//        title_text2 = (TextView) dialog_help.findViewById(R.id.title_text2);
-//        title_text3 = (TextView) dialog_help.findViewById(R.id.title_text3);
-//        title_text4 = (TextView) dialog_help.findViewById(R.id.title_text4);
-//        title_text5 = (TextView) dialog_help.findViewById(R.id.title_text5);
-//        title_text6 = (TextView) dialog_help.findViewById(R.id.title_text6);
-//        content_text1 = (TextView) dialog_help.findViewById(R.id.content_text1);
-//        content_text2 = (TextView) dialog_help.findViewById(R.id.content_text2);
-//        content_text3 = (TextView) dialog_help.findViewById(R.id.content_text3);
-//        content_text4 = (TextView) dialog_help.findViewById(R.id.content_text4);
-//        content_text5 = (TextView) dialog_help.findViewById(R.id.content_text5);
-//        content_text6 = (TextView) dialog_help.findViewById(R.id.content_text6);
-//        txthelp = (TextView) dialog_help.findViewById(R.id.txthelp);
-//        scrollhelp = (NestedScrollView) dialog_help.findViewById(R.id.scrollhelp);
-//        layouthelp = (LinearLayout) dialog_help.findViewById(R.id.layouthelp);
         txtContent1 = (TextView) dialog_help.findViewById(R.id.title_text1);
         TextView txtTitle1 = (TextView) dialog_help.findViewById(R.id.content_text1);
         txtContent1.setVisibility(View.GONE);

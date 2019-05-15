@@ -48,6 +48,7 @@ public class MenuPortfolio extends AppCompatActivity {
                 if(parsedYear >= 1){
                     Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
                     i.putExtra("yearLevel", "1");
+
                     startActivity(i);
                 }else{
                     Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();

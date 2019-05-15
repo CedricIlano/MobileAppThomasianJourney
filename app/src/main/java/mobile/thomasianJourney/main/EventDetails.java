@@ -534,7 +534,7 @@ public class EventDetails extends AppCompatActivity {
                         Intent i = getIntent();
                         String id = i.getExtras().getString("activityId");
 
-                        Intent intent = new Intent(this, VerifyLoginCred.class);
+                        Intent intent = new Intent(this, GPSActivity.class);
                         intent.putExtra("activityId", id);
                         startActivity(intent);
                         finish();

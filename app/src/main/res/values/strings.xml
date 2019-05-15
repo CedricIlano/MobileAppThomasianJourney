@@ -47,6 +47,7 @@
     <string name="registerURL">https://thomasianjourney.website/register/registerUser</string>
     <string name="registerCheckCodeURL">https://thomasianjourney.website/register/checkCode</string>
     <string name="studentDetails">https://thomasianjourney.website/register/studentdetails</string>
+    <string name="title_activity_gps">GPSActivity</string>
 </resources>
 
 

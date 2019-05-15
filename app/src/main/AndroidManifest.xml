@@ -34,7 +34,10 @@
         android:roundIcon="@drawable/tjlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
+        <activity
+            android:name="mobile.thomasianJourney.main.GPSActivity"
+            android:label="@string/title_activity_gps"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
         <activity
             android:name="mobile.thomasianJourney.main.MenuPortfolio"
             android:label="View Portfolio"
@@ -127,13 +130,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <service android:name="mobile.thomasianJourney.main.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name="mobile.thomasianJourney.main.FirebaseMessagingService">
+        <service android:name="mobile.thomasianJourney.main.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

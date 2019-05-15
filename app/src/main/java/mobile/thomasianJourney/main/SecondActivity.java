@@ -126,7 +126,9 @@ public class SecondActivity extends AppCompatActivity {
                         if (dataObject.has("studregEmail") && dataObject.has("studregmobileNum") && dataObject.has("studentsId")) {
                             String emailAddress = dataObject.get("studregEmail").getAsString();
                             String mobileNumber = dataObject.get("studregmobileNum").getAsString();
-                            int studentsId = dataObject.get("studNumber").getAsInt();
+                            //int studentsId = dataObject.get("studNumber").getAsInt();
+                            String studentsId = dataObject.get("studNumber").getAsString();
+
                             int studPoints = dataObject.get("studPoints").getAsInt();
                             String studname = dataObject.get("studregName").getAsString();
 

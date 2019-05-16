@@ -29,7 +29,7 @@ public class VerifyLoginCred extends AppCompatActivity {
     private TextView vtvtwo ;
     private LottieAnimationView LottieLoad;
 
-    Intent i2 = new Intent(this,VerLoginCredSuc.class);
+    Intent i2 = new Intent(this,VerifyLoginCred.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

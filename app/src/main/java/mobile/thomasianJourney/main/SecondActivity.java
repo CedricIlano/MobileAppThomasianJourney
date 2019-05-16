@@ -76,8 +76,8 @@ public class SecondActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        home_studentNumber.setText(getStudentId() + "");
-        home_totalPoints.setText("xx.xx");
+        home_studentNumber.setText("");
+        home_totalPoints.setText("");
         home_currentDate.setText(DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().getTime()));
 
 

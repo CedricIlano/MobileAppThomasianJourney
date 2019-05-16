@@ -88,13 +88,13 @@ public class EventDetails extends AppCompatActivity {
 //                openVerifyLoginCred();
 //            }
 //        });
-        img_help = (ImageView) findViewById(R.id.img_help);
+        /*img_help = (ImageView) findViewById(R.id.img_help);
         img_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ShowDialogHelp();
             }
-        });
+        });*/
 
         dialog_help = new Dialog(this);
 

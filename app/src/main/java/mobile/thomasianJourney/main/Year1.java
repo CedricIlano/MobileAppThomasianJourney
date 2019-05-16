@@ -186,10 +186,10 @@ public class Year1 extends Fragment {
 
 
                 }else{
-                    LinearLayout listlayout = getActivity().findViewById(R.id.list2);
-                    empty = getActivity().findViewById(R.id.empty);
-                    View child = getLayoutInflater().inflate(R.layout.activity_emptytab, null);
-                    listlayout.addView(child);
+//                    LinearLayout listlayout = getActivity().findViewById(R.id.list2);
+//                    empty = getActivity().findViewById(R.id.empty);
+//                    View child = getLayoutInflater().inflate(R.layout.activity_emptytab, null);
+//                    listlayout.addView(child);child
                     x = 1;
                 }
 

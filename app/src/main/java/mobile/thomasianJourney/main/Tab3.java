@@ -163,18 +163,12 @@ public class Tab3 extends Fragment {
                         listContact.add(new Contact(activityName, eventVenue, eventDate, activityId, status));
                     }
 
-                    mRecyclerViewAdapter = new RecyclerViewAdapter(getContext(),listContact);
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
 
 
                 }
 
             }catch(Exception err){
-                mRecyclerView.setVisibility(View.GONE);
-                empty = getActivity().findViewById(R.id.empty);
-                empty.setVisibility(View.VISIBLE);
 
             }
         }

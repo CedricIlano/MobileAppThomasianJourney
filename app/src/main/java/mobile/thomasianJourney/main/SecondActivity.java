@@ -76,7 +76,7 @@ public class SecondActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        home_studentNumber.setText(getStudentId() + "");
+        home_studentNumber.setText("");
         home_totalPoints.setText("");
         home_currentDate.setText(DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().getTime()));
 
@@ -180,7 +180,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private int getStudentId() {
 
-        SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("sp", Context.MODE_PRIVATE);
 
         String email = sharedPreferences.getString("email", "");
         String mobile = sharedPreferences.getString("mobile", "");

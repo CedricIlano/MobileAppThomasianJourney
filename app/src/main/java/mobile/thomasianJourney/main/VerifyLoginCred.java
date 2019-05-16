@@ -53,10 +53,13 @@ public class VerifyLoginCred extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main" +
                 ".register.USER_CREDENTIALS", Context.MODE_PRIVATE);
-        String studID = sharedPreferences.getInt(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, 0) + "";
+        String studID =
+                sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "") + "";
 
 
-        int studentId = sharedPreferences.getInt(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, 0);
+        String studentId =
+                sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID,
+                "");
 
 
         AsyncResponse asyncResponse = new AsyncResponse() {
@@ -148,7 +151,7 @@ public class VerifyLoginCred extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Cannot find Student Details",
                     Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(SecondActivity.this, SecondActivity.class);
+            //Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
             //startActivity(intent);
             //finish();
 

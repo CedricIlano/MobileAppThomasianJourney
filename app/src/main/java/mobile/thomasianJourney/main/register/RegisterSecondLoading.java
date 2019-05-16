@@ -104,8 +104,11 @@ public class RegisterSecondLoading extends AppCompatActivity {
 
 						String emailAddressToPass;
 						String mobileNumberToPass;
-						int studentsIdToPass;
+						String studentsIdToPass;
 						String verificationCodeToPass;
+						String studentEmail, studentName, studentCollegeId, studentYearLevelId;
+						int studentPoints;
+						JsonObject studentJsonObject;
 
 						if (dataObject.get("studregEmail") != null) {
 							emailAddressToPass = dataObject.get("studregEmail").getAsString();
@@ -115,21 +118,103 @@ public class RegisterSecondLoading extends AppCompatActivity {
 										dataObject.get("studregmobileNum").getAsString();
 
 								if (dataObject.get("studentsId") != null) {
-									studentsIdToPass = dataObject.get("studentsId").getAsInt();
+									studentsIdToPass = dataObject.get("studentsId").getAsString();
 
 									if (dataObject.get("numbercode") != null) {
 										verificationCodeToPass =
 												dataObject.get("numbercode").getAsString();
 
-										Intent intent = new Intent(RegisterSecondLoading.this, RegisterSuccess.class);
-										intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddressToPass);
-										intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumberToPass);
-										intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsIdToPass);
-										intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_VERIFICATION_CODE, verificationCodeToPass);
+										if (dataObject.get("studentDetails") != null) {
+											studentJsonObject =
+													dataObject.get("studentDetails").getAsJsonObject();
 
-										startActivity(intent);
+											if (studentJsonObject != null) {
 
-										finish();
+												if (studentJsonObject.has("studentName")) {
+													studentName = studentJsonObject.get(
+															"studentName").getAsString();
+
+													if (studentJsonObject.has("studentEmail")) {
+														studentEmail = studentJsonObject.get(
+																"studentEmail").getAsString();
+
+														if (studentJsonObject.has("studentPoints")) {
+															studentPoints =
+																	studentJsonObject.get(
+																			"studentPoints").getAsInt();
+
+															if (studentJsonObject.has(
+																	"studentCollegeId")) {
+																 studentCollegeId =
+																		 studentJsonObject.get(
+																		 		"studentCollegeId").getAsString();
+
+																 if (studentJsonObject.has(
+																 		"studentYearLevelId")) {
+																 	studentYearLevelId =
+																			studentJsonObject.get("studentYearLevelId").getAsString();
+
+																	 Intent intent = new Intent(RegisterSecondLoading.this, RegisterSuccess.class);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddressToPass);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumberToPass);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsIdToPass);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_VERIFICATION_CODE, verificationCodeToPass);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_NAME, studentName);
+//																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, studentEmail);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_POINTS, studentPoints);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, studentCollegeId);
+																	 intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, studentYearLevelId);
+
+																	 startActivity(intent);
+
+																	 finish();
+																 } else {
+																	 Toast.makeText(this,
+																			 "Student year level " +
+																					 "id" +
+																					 " not found," +
+																			 " " +
+																			 "please try again.",	Toast.LENGTH_SHORT).show();
+																	 toRegisterSecond();
+																 }
+															} else {
+																Toast.makeText(this, "Student " +
+																		"college id" +
+																		" not found," +
+																		" " +
+																		"please try again.",	Toast.LENGTH_SHORT).show();
+																toRegisterSecond();
+															}
+														} else {
+															Toast.makeText(this, "Student points " +
+																	"not found," +
+																	" " +
+																	"please try again.",	Toast.LENGTH_SHORT).show();
+															toRegisterSecond();
+														}
+													} else {
+														Toast.makeText(this, "Student email not " +
+																"found," +
+																" " +
+																"please try again.",	Toast.LENGTH_SHORT).show();
+														toRegisterSecond();
+													}
+												} else {
+													Toast.makeText(this, "Student name not found," +
+															" " +
+															"please try again.",	Toast.LENGTH_SHORT).show();
+													toRegisterSecond();
+												}
+											} else {
+												Toast.makeText(this, "Student information not found, " +
+														"please try again.",	Toast.LENGTH_SHORT).show();
+												toRegisterSecond();
+											}
+										} else {
+											Toast.makeText(this, "Student information not found, " +
+													"please try again.",	Toast.LENGTH_SHORT).show();
+											toRegisterSecond();
+										}
 									} else {
 										Toast.makeText(this, "Number code is empty", Toast.LENGTH_SHORT).show();
 										toRegisterSecond();

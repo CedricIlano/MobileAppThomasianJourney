@@ -1,7 +1,9 @@
 package mobile.thomasianJourney.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import mobile.thomasianJourney.main.Contact;
 import mobile.thomasianJourney.main.RecyclerViewAdapterPort;
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 import okhttp3.ConnectionSpec;
 import okhttp3.MultipartBody;
@@ -53,24 +56,28 @@ public class Year2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Intent i = getActivity().getIntent();
-        String yearLevel = i.getExtras().getString("yearLevel");
-        String[] tabs = i.getExtras().getStringArray("emptytab"+yearLevel);
 
-        View rootView;
-        if(tabs != null && tabs[1].equals("false")){
-            rootView = inflater.inflate(R.layout.activity_year1, container, false);
-            list = rootView.findViewById(R.id.list2);
-            mRecyclerView = rootView.findViewById(R.id.list2);
+        if (i != null) {
+            String yearLevel = i.getStringExtra("yearLevel");
+            String[] tabs = i.getStringArrayExtra("emptytab"+yearLevel);
 
-            mRecyclerViewAdapter = new RecyclerViewAdapterPort(getContext(),listContact);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+            View rootView;
+            if(tabs != null && tabs[1].equals("false")){
+                rootView = inflater.inflate(R.layout.activity_year1, container, false);
+                list = rootView.findViewById(R.id.list2);
+                mRecyclerView = rootView.findViewById(R.id.list2);
 
-        }else{
-            rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+                mRecyclerViewAdapter = new RecyclerViewAdapterPort(getContext(),listContact);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
+                return rootView;
+            }else{
+                rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+            }
         }
 
-        return rootView;
+        return null;
     }
 
     @Override
@@ -84,17 +91,25 @@ public class Year2 extends Fragment {
 //        }
         Intent i = getActivity().getIntent();
 
-        String eventClass = "2";
-        String yearLevel = ""+i.getExtras().getString("yearLevel");
-        String accountId = "1";
+        View view = getView();
 
-        OkHttpHandler okHttpHandler = new OkHttpHandler();
-        //DITO PAPASOK YUNG ID NG EVENT SA VIEW EVENTS
+        if (view != null) {
+            SharedPreferences sharedPreferences =
+                    getActivity().getSharedPreferences(view.getResources().getString(R.string.shared_preferences_name), Context.MODE_PRIVATE);
 
-        okHttpHandler.execute(url, accountId, eventClass, yearLevel);
+            if (sharedPreferences != null) {
+                if (i != null) {
+                    String eventClass = "1";
+                    String yearLevel = i.getStringExtra("yearLevel");
+                    String accountId =
+                            sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 
+                    Year2.OkHttpHandler okHttpHandler = new Year2.OkHttpHandler();
 
-
+                    okHttpHandler.execute(url, accountId, eventClass, yearLevel);
+                }
+            }
+        }
     }
 
     public class OkHttpHandler extends AsyncTask<String, Void, String> {

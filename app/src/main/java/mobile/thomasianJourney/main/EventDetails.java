@@ -92,7 +92,7 @@ public class EventDetails extends AppCompatActivity {
         img_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialogHelp();
+                showDialogHelp();
             }
         });*/
 

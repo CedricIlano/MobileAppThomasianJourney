@@ -1,6 +1,8 @@
 package mobile.thomasianJourney.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 import okhttp3.ConnectionSpec;
 import okhttp3.MultipartBody;
@@ -36,9 +40,9 @@ public class Tab3 extends Fragment {
     //    private List<> mList;
     RecyclerView list;
     private RecyclerViewAdapter mRecyclerViewAdapter;
-    String dates [] = {"Feb 26", "Date 00", "Date 00", "Date 00", "Date 00", "Date 00", "Date 00", "Date 00"};
-    String titles[] = {"Science Week Opening Ceremony", "Title Two", "Title Three", "Title Four","Title Five","Title Six","Title Seven","Title Eight"};
-    String descriptions[] = {"Medicine Auditorium", "Description Two...", "Description Three...", "Description Four...","Description Five...","Description Six...","Description Seven...","Description Eight..."};
+    String[] dates = {"Feb 26", "Date 00", "Date 00", "Date 00", "Date 00", "Date 00", "Date 00", "Date 00"};
+    String[] titles = {"Science Week Opening Ceremony", "Title Two", "Title Three", "Title Four", "Title Five", "Title Six", "Title Seven", "Title Eight"};
+    String[] descriptions = {"Medicine Auditorium", "Description Two...", "Description Three...", "Description Four...", "Description Five...", "Description Six...", "Description Seven...", "Description Eight..."};
     public String url = "https://thomasianjourney.website/Register/insertAttendedEvents";
     public List<Contact> listContact = new ArrayList<>();
     public ProgressDialog dialog;
@@ -48,7 +52,6 @@ public class Tab3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         View rootView = inflater.inflate(R.layout.tab1, container, false);
         list = rootView.findViewById(R.id.list1);
@@ -64,23 +67,30 @@ public class Tab3 extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        listContact = new ArrayList<>();
-//        for (int i = 0 ; i < dates.length ; i++){
-//
-//            listContact.add(new Contact(titles[i], descriptions[i], dates[i]));
-//        }
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("mobile" +
+                ".thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
 
         dialog = new ProgressDialog(getContext());
 
-        //intent mo sa lahat
-        String collegeId = "1";
-        String yearLevel = "1";
-        String accountId = "1";
-        Tab3.OkHttpHandler okHttpHandler = new Tab3.OkHttpHandler();
-        //DITO PAPASOK YUNG ID NG EVENT SA VIEW EVENTS
+        if (sharedPreferences != null) {
+            String collegeId =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, "");
+            String yearLevel =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
+            String accountId =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 
+            if (!collegeId.isEmpty() && !yearLevel.isEmpty() && !accountId.isEmpty()) {
+                Tab3.OkHttpHandler okHttpHandler = new Tab3.OkHttpHandler();
 
-        okHttpHandler.execute(url, collegeId, yearLevel, accountId);
+                okHttpHandler.execute(url, collegeId, yearLevel, String.valueOf(accountId));
+            } else {
+                Toast.makeText(getActivity(), "Student info not found", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), "Student info not found", Toast.LENGTH_LONG).show();
+        }
 
     }
     public class OkHttpHandler extends AsyncTask<String, Void, String> {
@@ -131,21 +141,17 @@ public class Tab3 extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String s) {
-
-//            if(dialog.isShowing()){
             dialog.dismiss();
-//            }
-//            textView.setText(s);
-            insertList(s);
-//            Toast.makeText(getContext(), ""+s, Toast.LENGTH_SHORT).show();
 
+            insertList(s);
         }
     }
 
     public void insertList(String s){
         dialog.dismiss();
-        if(!TextUtils.isEmpty(s)){
-            try{
+
+        if(!TextUtils.isEmpty(s)) {
+            try {
                 Gson gson = new Gson();
 
                 JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
@@ -153,7 +159,7 @@ public class Tab3 extends Fragment {
                 if  (jsonObject.has("data")) {
 
                     JsonArray dataArray = jsonObject.get("data").getAsJsonArray();
-                    for (int i = 0 ; i < dataArray.size() ; i++){
+                    for (int i = 0 ; i < dataArray.size() ; i++) {
 
                         JsonObject dataObject = dataArray.get(i).getAsJsonObject();
                         String eventVenue = dataObject.get("eventVenue").getAsString();
@@ -163,21 +169,11 @@ public class Tab3 extends Fragment {
                         String status = "";
                         listContact.add(new Contact(activityName, eventVenue, eventDate, activityId, status));
                     }
-
-
-
-
                 }
 
-            }catch(Exception err){
-
+            } catch(Exception err) {
+                err.printStackTrace();
             }
         }
-
-
-
     }
-
-
-
 }

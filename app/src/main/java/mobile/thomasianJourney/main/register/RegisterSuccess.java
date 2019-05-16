@@ -12,12 +12,11 @@ import android.widget.Button;
 import com.airbnb.lottie.LottieAnimationView;
 import com.baoyachi.stepview.HorizontalStepView;
 import com.baoyachi.stepview.bean.StepBean;
-import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.thomasianJourney.main.SecondActivity;
+import mobile.thomasianJourney.main.home.HomeActivity;
 import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 
@@ -25,8 +24,8 @@ public class RegisterSuccess extends AppCompatActivity {
     private Button verifySuccess_continueButton;
     private LottieAnimationView registerSuccess_lottieAnimationView;
 
-    private String mEmail, mMobile;
-    private int mStudentsId;
+    private String mEmail, mMobile, mName, mCollegeId, mYearLevelId, mStudentsId;
+    private int mPoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,13 @@ public class RegisterSuccess extends AppCompatActivity {
         if (intent != null) {
             mEmail = intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS);
             mMobile = intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER);
-            mStudentsId = intent.getIntExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, -1);
+            mStudentsId = intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID);
+            mName = intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_NAME);
+            mCollegeId =
+                    intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID);
+            mYearLevelId =
+                    intent.getStringExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID);
+            mPoints = intent.getIntExtra(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_POINTS, -1);
 
             initializeViews();
         }
@@ -77,9 +82,10 @@ public class RegisterSuccess extends AppCompatActivity {
         verifySuccess_continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveCredentialsToSharedPreferences(mEmail, mMobile, mStudentsId);
+                saveCredentialsToSharedPreferences(mEmail, mMobile, mStudentsId, mName,
+                        mCollegeId, mYearLevelId, mPoints);
 
-                Intent i = new Intent(RegisterSuccess.this, SecondActivity.class);
+                Intent i = new Intent(RegisterSuccess.this, HomeActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -87,15 +93,23 @@ public class RegisterSuccess extends AppCompatActivity {
     }
 
     public void saveCredentialsToSharedPreferences(String emailAddress, String mobileNumber,
-                                                   int studentsId) {
+                                                   String studentsId, String studentName,
+                                                   String collegeId, String yearLevelId,
+                                                   int points) {
 
-        SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                getSharedPreferences(getString(R.string.shared_preferences_name),
+                        Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddress);
         editor.putString(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER, mobileNumber);
-        editor.putInt(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsId);
+        editor.putString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, studentsId);
+        editor.putString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_NAME, studentName);
+        editor.putString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, collegeId);
+        editor.putString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, yearLevelId);
+        editor.putInt(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_POINTS, points);
 
         editor.apply();
     }

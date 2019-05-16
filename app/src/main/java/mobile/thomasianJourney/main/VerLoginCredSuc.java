@@ -1,8 +1,10 @@
 package mobile.thomasianJourney.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationListener;
@@ -26,6 +28,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Arrays;
 
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 import okhttp3.ConnectionSpec;
 import okhttp3.MultipartBody;
@@ -39,7 +42,7 @@ public class VerLoginCredSuc extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private LottieAnimationView LottieCheck;
-        public String url = "https://thomasianjourney.website/Register/insertAttended";
+    public String url = "https://thomasianjourney.website/Register/insertAttended";
     Dialog dialog_errorqr;
     Button okbtn;
     TextView titleErrorQR, exErrorRQ;
@@ -49,56 +52,10 @@ public class VerLoginCredSuc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_login_cred_suc);
+        Lottie();
 
-        //ANIMATION LOTTIE
-        LottieCheck = findViewById(R.id.mainlottieCheck);
-
-        LottieCheck.setScale(6f);
-        LottieCheck.setVisibility(View.VISIBLE);
-        LottieCheck.setAnimation(R.raw.check);
-        LottieCheck.playAnimation();
-
-        contscanbtn = (Button) findViewById(R.id.contscanbtn);
+        contscanbtn = findViewById(R.id.contscanbtn);
         final Activity activity = this;
-//        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-//        locationListener = new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                Log.d("Location: ", location.toString());
-//
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String provider) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String provider) {
-//
-//            }
-//        };
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-//
-//        }else{
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-//
-//        }
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-//
 
         contscanbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +72,7 @@ public class VerLoginCredSuc extends AppCompatActivity {
             }
         });
     }
-    //Dito lalagay intent
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -135,43 +92,32 @@ public class VerLoginCredSuc extends AppCompatActivity {
                 String[]  info = contents.split(";");
 
 //                && info[1].equals("sana") && info[2].equals("hehe")
-                if(info[0].equals(id)){
-                    String accountId = "1";
-                    String yearLevel = "2";
-                    OkHttpHandler okHttpHandler = new OkHttpHandler();
-                    okHttpHandler.execute(url, accountId ,id, yearLevel);
-                    Intent i = new Intent(VerLoginCredSuc.this, ScanSuccess.class);
-                    startActivity(i);
-                    finish();
 
-                }else{
-                    //BOSS DITO MO ILAGAY YUNG DIALOG BOX PAG DI NARERECOGNIZE YUNG QRCODE
+                SharedPreferences sharedPreferences =
+                        getSharedPreferences(getString(R.string.shared_preferences_name),
+                                Context.MODE_PRIVATE);
 
-                    dialog_errorqr = new Dialog(this);
-                    ShowDialogErrorQR();
+                if (sharedPreferences != null) {
+                    if(info[0].equals(id)){
+                        String accountId =
+                                sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
+                        String yearLevel = "2";
+                        OkHttpHandler okHttpHandler = new OkHttpHandler();
+                        okHttpHandler.execute(url, accountId ,id, yearLevel);
+                        Intent i = new Intent(VerLoginCredSuc.this, ScanSuccess.class);
+                        startActivity(i);
+                        finish();
 
-
+                    } else {
+                        dialog_errorqr = new Dialog(this);
+                        ShowDialogErrorQR();
+                    }
+                } else {
+                    Toast.makeText(VerLoginCredSuc.this, "Shared preferences not found",
+                            Toast.LENGTH_LONG).show();
                 }
-//                Gson gson = new Gson();
-//                JsonObject jsonObject = gson.fromJson(contents, JsonObject.class);
-//                String activityName = "";
-//                String description = "";
-//                String eventVenue = "";
-//
-//                if(jsonObject.has("activityName") || jsonObject.has("description") || jsonObject.has("eventVenue")){
-//                    activityName = jsonObject.get("activityName").getAsString();
-//                    description = jsonObject.get("description").getAsString();
-//                    eventVenue = jsonObject.get("eventVenue").getAsString();
-//                    Toast.makeText(this, activityName, Toast.LENGTH_SHORT).show();
-//
-//                }
-
-//                Intent i = new Intent(VerLoginCredSuc.this, ScanSuccess.class);
-//                startActivity(i);
-//                finish();
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -260,7 +206,16 @@ public class VerLoginCredSuc extends AppCompatActivity {
         dialog_errorqr.show();
     }
 
+    public void Lottie() {
+        //ANIMATION LOTTIE
+        LottieCheck = findViewById(R.id.mainlottieCheck);
 
+        LottieCheck.setScale(6f);
+        LottieCheck.setVisibility(View.VISIBLE);
+        LottieCheck.setAnimation(R.raw.check);
+        LottieCheck.playAnimation();
+
+    }
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import mobile.thomasianJourney.main.home.HomeActivity;
 import mobile.thomasianJourney.main.register.RegisterFirst;
 import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
@@ -35,7 +36,7 @@ public class Splash extends AppCompatActivity {
         Intent intent;
 
         if (isSharedPreferencesPresent()) {
-            intent = new Intent(Splash.this, SecondActivity.class);
+            intent = new Intent(Splash.this, HomeActivity.class);
         } else {
             intent = new Intent(Splash.this, RegisterFirst.class);
         }

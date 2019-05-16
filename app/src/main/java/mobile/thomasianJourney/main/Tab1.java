@@ -1,6 +1,8 @@
 package mobile.thomasianJourney.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -25,6 +28,7 @@ import java.util.List;
 
 import mobile.thomasianJourney.main.Contact;
 import mobile.thomasianJourney.main.RecyclerViewAdapter;
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 import okhttp3.ConnectionSpec;
 import okhttp3.MultipartBody;
@@ -70,15 +74,29 @@ public class Tab1 extends Fragment {
 //
 //            listContact.add(new Contact(titles[i], descriptions[i], dates[i]));
 //        }
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("mobile" +
+                ".thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
 
         dialog = new ProgressDialog(getContext());
 
-        String collegeId = "1";
-        String yearLevel = "1";
-        String accountId = "1";
-        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        if (sharedPreferences != null) {
+            String collegeId =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, "");
+            String yearLevel =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
+            String accountId =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 
-        okHttpHandler.execute(url, collegeId, yearLevel, accountId);
+            if (!collegeId.isEmpty() && !yearLevel.isEmpty() && !accountId.isEmpty()) {
+                Tab1.OkHttpHandler okHttpHandler = new Tab1.OkHttpHandler();
+
+                okHttpHandler.execute(url, collegeId, yearLevel, accountId);
+            } else {
+                Toast.makeText(getActivity(), "Student info not found", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), "Student info not found", Toast.LENGTH_LONG).show();
+        }
 
     }
     public class OkHttpHandler extends AsyncTask<String, Void, String> {

@@ -45,7 +45,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 String id = vHolder.activityId.getText().toString().trim();
                 Intent i = new Intent(mContext, EventDetails.class);
                 i.putExtra("activityId", id);
-//                Toast.makeText(mContext, ""+id, Toast.LENGTH_SHORT).show();
                 mContext.startActivity(i);
 
             }
@@ -55,16 +54,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 String id = vHolder.activityId.getText().toString().trim();
                 Intent i = new Intent(mContext, EventDetails.class);
-
                 i.putExtra("activityId", id);
                 mContext.startActivity(i);
 
             }
         });
-
-
-
-
 
         return vHolder;
     }
@@ -79,8 +73,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String status = "";
         try{
             status = mData.get(i).getStatus();
-        }catch (Exception e){
-
+        } catch (Exception e){
+            e.printStackTrace();
         }
         switch(month){
             case "01":
@@ -130,52 +124,55 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         myViewHolder.activityId.setText(mData.get(i).getId());
 
-        if(status.equals("absent")){
-            myViewHolder.attended.setText("Not Attended");
-            myViewHolder.item_contact.setClickable(false);
-            myViewHolder.date.setClickable(false);
-            myViewHolder.item_contact.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "Event no longer available", Toast.LENGTH_LONG).show();
-                }
-            });
-            myViewHolder.date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "Event no longer available", Toast.LENGTH_LONG).show();
-                }
-            });
+        switch (status) {
+            case "absent":
+                myViewHolder.attended.setText("Not Attended");
+                myViewHolder.item_contact.setClickable(false);
+                myViewHolder.date.setClickable(false);
+                myViewHolder.item_contact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Event no longer available", Toast.LENGTH_LONG).show();
+                    }
+                });
+                myViewHolder.date.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Event no longer available", Toast.LENGTH_LONG).show();
+                    }
+                });
 
-        }else if(status.equals("upcoming")){
-            myViewHolder.attended.setText("Event Not Yet Available");
-            //Dito mo fix yung color
-            myViewHolder.attended.setTextColor(Color.parseColor("#FF8C00"));
-        }else if(status.equals("available")){
-            myViewHolder.attended.setText("Event Available");
-            //Dito mo fix yung color
-            myViewHolder.attended.setTextColor(Color.parseColor("#008000"));
-        }else if(status.equals("cancelled")){
-            myViewHolder.attended.setText("Cancelled");
-            myViewHolder.attended.setAllCaps(true);
-            myViewHolder.attended.setTextColor(Color.parseColor("#B22222"));
-            myViewHolder.item_contact.setClickable(false);
-            myViewHolder.date.setClickable(false);
-            myViewHolder.item_contact.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "Event is Cancelled", Toast.LENGTH_LONG).show();
-                }
-            });
-            myViewHolder.date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "Event is Cancelled", Toast.LENGTH_LONG).show();
-                }
-            });
+                break;
+            case "upcoming":
+                myViewHolder.attended.setText("Event Not Yet Available");
+                //Dito mo fix yung color
+                myViewHolder.attended.setTextColor(Color.parseColor("#FF8C00"));
+                break;
+            case "available":
+                myViewHolder.attended.setText("Event Available");
+                //Dito mo fix yung color
+                myViewHolder.attended.setTextColor(Color.parseColor("#008000"));
+                break;
+            case "cancelled":
+                myViewHolder.attended.setText("Cancelled");
+                myViewHolder.attended.setAllCaps(true);
+                myViewHolder.attended.setTextColor(Color.parseColor("#B22222"));
+                myViewHolder.item_contact.setClickable(false);
+                myViewHolder.date.setClickable(false);
+                myViewHolder.item_contact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Event is Cancelled", Toast.LENGTH_LONG).show();
+                    }
+                });
+                myViewHolder.date.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Event is Cancelled", Toast.LENGTH_LONG).show();
+                    }
+                });
+                break;
         }
-
-
     }
 
     @Override
@@ -183,7 +180,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mData.size();
      }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private LinearLayout item_contact;
         private TextView tv_name;
@@ -195,7 +192,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView attended;
 
 
-        public MyViewHolder(View itemView){
+        MyViewHolder(View itemView){
             super(itemView);
             activityId = itemView.findViewById(R.id.activityId);
             item_contact = itemView.findViewById(R.id.contact_item_id);

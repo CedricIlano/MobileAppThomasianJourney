@@ -1,7 +1,9 @@
 package mobile.thomasianJourney.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -27,6 +29,7 @@ import java.util.List;
 
 import mobile.thomasianJourney.main.Contact;
 import mobile.thomasianJourney.main.RecyclerViewAdapterPort;
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 import okhttp3.ConnectionSpec;
 import okhttp3.MultipartBody;
@@ -56,25 +59,29 @@ public class Year1 extends Fragment {
                              Bundle savedInstanceState) {
 
         Intent i = getActivity().getIntent();
-        String yearLevel = i.getExtras().getString("yearLevel");
-        String[] tabs = i.getExtras().getStringArray("emptytab"+yearLevel);
+
+        if (i != null) {
+            String yearLevel = i.getStringExtra("yearLevel");
+            String[] tabs = i.getStringArrayExtra("emptytab"+yearLevel);
 //        Log.i("ok","tabs = "+tabs.toString());
 //        Toast.makeText(getContext(), "Empty Tab:"+tabs[0], Toast.LENGTH_SHORT).show();
-        View rootView;
-        if(tabs != null && tabs[0].equals("false")){
-            rootView = inflater.inflate(R.layout.activity_year1, container, false);
-            list = rootView.findViewById(R.id.list2);
-            mRecyclerView = rootView.findViewById(R.id.list2);
+            View rootView;
+            if(tabs != null && tabs[0].equals("false")){
+                rootView = inflater.inflate(R.layout.activity_year1, container, false);
+                list = rootView.findViewById(R.id.list2);
+                mRecyclerView = rootView.findViewById(R.id.list2);
 
-            mRecyclerViewAdapter = new RecyclerViewAdapterPort(getContext(),listContact);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+                mRecyclerViewAdapter = new RecyclerViewAdapterPort(getContext(),listContact);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
-        }else{
-            rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+                return rootView;
+            }else{
+                rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+            }
         }
 
-        return rootView;
+       return null;
     }
 
     @Override
@@ -82,23 +89,27 @@ public class Year1 extends Fragment {
         super.onCreate(savedInstanceState);
         dialog = new ProgressDialog(getContext());
 
-
-//        for (int i = 0 ; i < dates.length ; i++){
-//            listContact.add(new Contact(titles[i], descriptions[i], dates[i]));
-//        }
         Intent i = getActivity().getIntent();
 
-        String eventClass = "1";
-        String yearLevel = ""+i.getExtras().getString("yearLevel");
-        String accountId = "1";
+        View view = getView();
 
-        OkHttpHandler okHttpHandler = new OkHttpHandler();
-        //DITO PAPASOK YUNG ID NG EVENT SA VIEW EVENTS
+        if (view != null) {
+            SharedPreferences sharedPreferences =
+                    getActivity().getSharedPreferences(view.getResources().getString(R.string.shared_preferences_name), Context.MODE_PRIVATE);
 
-        okHttpHandler.execute(url, accountId, eventClass, yearLevel);
+            if (sharedPreferences != null) {
+                if (i != null) {
+                    String eventClass = "1";
+                    String yearLevel = i.getStringExtra("yearLevel");
+                    String accountId =
+                            sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 
+                    OkHttpHandler okHttpHandler = new OkHttpHandler();
 
-
+                    okHttpHandler.execute(url, accountId, eventClass, yearLevel);
+                }
+            }
+        }
     }
 
     public class OkHttpHandler extends AsyncTask<String, Void, String> {

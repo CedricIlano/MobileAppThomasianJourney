@@ -41,7 +41,7 @@
         <activity
             android:name="mobile.thomasianJourney.main.MenuPortfolio"
             android:label="View Portfolio"
-            android:parentActivityName="mobile.thomasianJourney.main.SecondActivity"
+            android:parentActivityName="mobile.thomasianJourney.main.home.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -61,11 +61,11 @@
         <activity
             android:name="mobile.thomasianJourney.main.MainActivity"
             android:label="View Events"
-            android:parentActivityName="mobile.thomasianJourney.main.SecondActivity"
+            android:parentActivityName="mobile.thomasianJourney.main.home.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="mobile.thomasianJourney.main.SecondActivity"
+            android:name="mobile.thomasianJourney.main.home.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Dark.NoActionBar.FullScreen" />
         <activity

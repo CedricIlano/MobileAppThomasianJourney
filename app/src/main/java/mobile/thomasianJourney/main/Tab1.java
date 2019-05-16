@@ -77,8 +77,6 @@ public class Tab1 extends Fragment {
         String yearLevel = "1";
         String accountId = "1";
         OkHttpHandler okHttpHandler = new OkHttpHandler();
-        //DITO PAPASOK YUNG ID NG EVENT SA VIEW EVENTS
-
 
         okHttpHandler.execute(url, collegeId, yearLevel, accountId);
 
@@ -127,7 +125,6 @@ public class Tab1 extends Fragment {
             }
             return null;
         }
-
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String s) {
@@ -141,7 +138,6 @@ public class Tab1 extends Fragment {
 
         }
     }
-
     public void insertList(String s){
         dialog.dismiss();
         if(!TextUtils.isEmpty(s)){
@@ -168,14 +164,12 @@ public class Tab1 extends Fragment {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
-
-
                 }
 
             }catch(Exception err){
-                mRecyclerView.setVisibility(View.GONE);
-                empty = getActivity().findViewById(R.id.empty);
-                empty.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
+//                empty = getActivity().findViewById(R.id.empty);
+//                empty.setVisibility(View.VISIBLE);
             }
         }
 

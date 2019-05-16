@@ -58,7 +58,7 @@ public class Year4 extends Fragment {
         String[] tabs = i.getExtras().getStringArray("emptytab"+yearLevel);
 
         View rootView  = inflater.inflate(R.layout.activity_year1, container, false);;
-        if(tabs[3].equals("false")){
+        if(tabs != null && tabs[3].equals("false")){
             rootView = inflater.inflate(R.layout.activity_year1, container, false);
             list = rootView.findViewById(R.id.list2);
             mRecyclerView = rootView.findViewById(R.id.list2);

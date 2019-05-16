@@ -71,6 +71,7 @@ public class Tab3 extends Fragment {
 //        }
 
         dialog = new ProgressDialog(getContext());
+
         //intent mo sa lahat
         String collegeId = "1";
         String yearLevel = "1";

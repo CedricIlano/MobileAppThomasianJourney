@@ -29,22 +29,15 @@ public class VerifyLoginCred extends AppCompatActivity {
     private TextView vtvtwo ;
     private LottieAnimationView LottieLoad;
 
-    Intent i2 = new Intent(this,VerLoginCredSuc.class);
+    Intent i2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_login_cred);
+        Lottie();
 
-        //ANIMATION LOTTIE
-        LottieLoad = findViewById(R.id.registerFirstLoading_lottieAnimationView);
-
-        LottieLoad.setScale(7f);
-        LottieLoad.setVisibility(View.VISIBLE);
-        LottieLoad.setAnimation(R.raw.load);
-        LottieLoad.playAnimation();
-
-
+        i2 = new Intent(this,VerLoginCredSuc.class);
         vtvone = (TextView) findViewById(R.id.vtvone);
         vtvtwo = (TextView) findViewById(R.id.vtvtwo);
         Animation myanim = AnimationUtils.loadAnimation(this,R.anim.mytransition);
@@ -162,4 +155,14 @@ public class VerifyLoginCred extends AppCompatActivity {
         }
     }
 
+    public void Lottie(){
+        //ANIMATION LOTTIE
+        LottieLoad = findViewById(R.id.registerFirstLoading_lottieAnimationView);
+
+        LottieLoad.setScale(7f);
+        LottieLoad.setVisibility(View.VISIBLE);
+        LottieLoad.setAnimation(R.raw.load);
+        LottieLoad.playAnimation();
+
+    }
 }

@@ -35,9 +35,11 @@ public class MenuPortfolio extends AppCompatActivity {
         second = findViewById(R.id.btnyr2);
         third = findViewById(R.id.btnyr3);
         fourth = findViewById(R.id.btnyr4);
+
         //CED SAYO TO HEHEHE
         String collegeId = "1";
         String yearLevel = "2";
+
         final int parsedYear = Integer.parseInt(yearLevel);
         final String accountId = "1";
 

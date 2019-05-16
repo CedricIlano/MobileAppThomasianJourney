@@ -86,7 +86,8 @@ public class RegisterSuccess extends AppCompatActivity {
         });
     }
 
-    public void saveCredentialsToSharedPreferences(String emailAddress, String mobileNumber, int studentsId) {
+    public void saveCredentialsToSharedPreferences(String emailAddress, String mobileNumber,
+                                                   int studentsId) {
 
         SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
 

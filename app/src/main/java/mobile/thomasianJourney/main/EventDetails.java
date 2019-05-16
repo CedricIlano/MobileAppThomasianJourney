@@ -397,7 +397,7 @@ public class EventDetails extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            dialog.hide();
+            dialog.dismiss();
             getEventDetails(s);
 
 
@@ -415,7 +415,7 @@ public class EventDetails extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void getEventDetails(String s){
-        dialog.hide();
+        dialog.dismiss();
         if(!TextUtils.isEmpty(s)){
             try {
                 Gson gson = new Gson();

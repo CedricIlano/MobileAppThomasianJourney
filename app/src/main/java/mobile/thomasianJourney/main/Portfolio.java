@@ -168,7 +168,6 @@ public class Portfolio extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
     }
 
     // list view adapter
@@ -199,10 +198,8 @@ public class Portfolio extends AppCompatActivity {
 //            myTitle.setText(titles[position]);
             myDescription.setText(descriptions[position]);
             return row;
-
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

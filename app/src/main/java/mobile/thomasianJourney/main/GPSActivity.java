@@ -72,7 +72,7 @@ public class GPSActivity extends AppCompatActivity {
                 //Log.i("Distance","Actual Distance = "+ActualDistance+"");
                 boolean isAccept = isAcceptDistance(ScopeRadiusMeters, ActualDistance);
                 //edit
-                //isAccept = true;
+                isAccept = true;
                 if(!isAccept){
                     errorlocation();
                     onPause();

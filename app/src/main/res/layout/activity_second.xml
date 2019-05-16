@@ -247,6 +247,7 @@ android:background="#fcfcfc">
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/EventName1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="100dp"
@@ -312,19 +313,20 @@ android:background="#fcfcfc">
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/EventName2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="100dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Title of Event"
+                        android:text="Science Week Opening Ceremony"
                         android:textSize="15dp"
                         android:fontFamily="@font/poppinsmedium"/>
 
-
                     <Button
-                        android:id="@+id/button1"
+                        android:id="@+id/streambtn2"
+                        android:onClick="StreamAnim1"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginLeft="5dp"
@@ -371,19 +373,20 @@ android:background="#fcfcfc">
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/EventName3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="100dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Title of Event"
+                        android:text="Science Week Opening Ceremony"
                         android:textSize="15dp"
                         android:fontFamily="@font/poppinsmedium"/>
 
-
                     <Button
-                        android:id="@+id/button1"
+                        android:id="@+id/streambtn3"
+                        android:onClick="StreamAnim1"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginLeft="5dp"
@@ -433,13 +436,14 @@ android:background="#fcfcfc">
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/EventName4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="100dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Title of Event"
+                        android:text="Science Week Opening Ceremony"
                         android:textSize="15dp"
                         android:fontFamily="@font/poppinsmedium"/>
 

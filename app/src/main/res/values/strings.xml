@@ -49,6 +49,7 @@
     <string name="studentDetails">https://thomasianjourney.website/register/studentdetails</string>
     <string name="title_activity_gps">GPSActivity</string>
     <string name="shared_preferences_name">mobile.thomasianJourney.main.register.USER_CREDENTIALS</string>
+    <string name="get4vents">https://thomasianjourney.website/register/get4Events</string>
 </resources>
 
 

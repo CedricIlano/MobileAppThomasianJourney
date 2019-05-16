@@ -2,23 +2,29 @@ package mobile.thomasianJourney.main.home;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
@@ -49,6 +55,9 @@ public class HomeActivity extends AppCompatActivity {
     private Animation animationDown1, animationDown2, animationDown3, animationDown4,
             animationDown5,
             animationDown6;
+    //private String buttons[] ={"streambtn1","streambtn2","streambtn3","button1"};
+    private int dates[] ={R.id.streambtn1,R.id.streambtn2,R.id.streambtn3,R.id.button1};
+    private int eventnames[] = {R.id.EventName1,R.id.EventName2,R.id.EventName3,R.id.EventName4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         dialog_help = new Dialog(HomeActivity.this);
         dialog_help.setContentView(R.layout.dialog_help);
         initializeHelpDialog();
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mHandler, new IntentFilter("mobile.thomasianJourney.main_FCM-MESSAGE"));
         home_studentNumber.setText("");
         home_totalPoints.setText("");
         home_currentDate.setText(DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().getTime()));
@@ -101,6 +110,18 @@ public class HomeActivity extends AppCompatActivity {
 
             StudentDetails studentDetails = new StudentDetails(asyncResponse);
             studentDetails.execute(studentId+"", getString(R.string.studentDetails));
+
+            AsyncResponse asyncResponse2 = new AsyncResponse() {
+                @Override
+                public void doWhenFinished(String output) {
+                    get4events(output);
+                }
+            };
+
+            EventStreamAsync eventStreamAsync = new EventStreamAsync(asyncResponse2);
+            eventStreamAsync.execute(getString(R.string.get4vents));
+
+
         }
     }
 
@@ -513,4 +534,70 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+    public void get4events(String s){
+        Log.i("","thhe String = "+s);
+        if (!TextUtils.isEmpty(s)) {
+            Gson gson = new Gson();
+
+            JsonObject jsonObject;
+
+            try {
+                jsonObject = gson.fromJson(s, JsonObject.class);
+
+                if (jsonObject.has("data")) {
+
+
+
+
+                        JsonArray dataArray = jsonObject.get("data").getAsJsonArray();
+                    if (dataArray != null) {
+                        for (int i = 0 ; i < dataArray.size() ; i++){
+
+                            JsonObject dataObject2 = dataArray.get(i).getAsJsonObject();
+                            String eventVenue = dataObject2.get("eventVenue").getAsString();
+                            String activityName = dataObject2.get("activityName").getAsString();
+                            String eventDate = dataObject2.get("eventDate").getAsString();
+                            String activityId = dataObject2.get("activityId").getAsString();
+
+
+                            Button btn = (Button) findViewById(dates[i]);
+                            btn.setText(eventDate);
+                            TextView tv = (TextView) findViewById(eventnames[i]);
+                            tv.setText(activityName);
+
+
+                        }
+                    } else {
+                        Toast.makeText(this, "No data",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "No object",
+                            Toast.LENGTH_SHORT).show();
+                }
+            } catch (JsonSyntaxException e) {
+                //Toast.makeText(this, "Json Syntax",
+                //Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "No Events Found",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+    private BroadcastReceiver mHandler = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            AsyncResponse asyncResponse2 = new AsyncResponse() {
+                @Override
+                public void doWhenFinished(String output) {
+                    get4events(output);
+                }
+            };
+
+            EventStreamAsync eventStreamAsync = new EventStreamAsync(asyncResponse2);
+            eventStreamAsync.execute(getString(R.string.get4vents));
+
+        }
+    };
 }

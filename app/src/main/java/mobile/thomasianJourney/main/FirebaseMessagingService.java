@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
@@ -18,6 +19,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){
         showNotification(remoteMessage.getData().get("heading"),remoteMessage.getData().get("message"));
+        Intent intent = new Intent("mobile.thomasianJourney.main_FCM-MESSAGE");
+
+        //intent.putExtra("message"," message = "+remoteMessage.getData().get("message"));
+
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.sendBroadcast(intent);
+
+
 
     }
     private void showNotification(String Heading, String message){

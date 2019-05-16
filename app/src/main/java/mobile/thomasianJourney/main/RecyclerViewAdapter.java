@@ -172,6 +172,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 });
                 break;
+            default:
+                myViewHolder.attended.setText("Attended");
+                myViewHolder.item_contact.setClickable(false);
+                myViewHolder.date.setClickable(false);
+                myViewHolder.attended.setTextColor(Color.parseColor("#008000"));
+                myViewHolder.item_contact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Event already attended", Toast.LENGTH_LONG).show();
+                    }
+                });
+                myViewHolder.date.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Event already attended", Toast.LENGTH_LONG).show();
+                    }
+                });
+                break;
         }
     }
 

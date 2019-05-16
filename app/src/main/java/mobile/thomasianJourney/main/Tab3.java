@@ -84,7 +84,7 @@ public class Tab3 extends Fragment {
             if (!collegeId.isEmpty() && !yearLevel.isEmpty() && !accountId.isEmpty()) {
                 Tab3.OkHttpHandler okHttpHandler = new Tab3.OkHttpHandler();
 
-                okHttpHandler.execute(url, collegeId, yearLevel, String.valueOf(accountId));
+                okHttpHandler.execute(url, collegeId, yearLevel, accountId);
             } else {
                 Toast.makeText(getActivity(), "Student info not found", Toast.LENGTH_LONG).show();
             }
@@ -167,8 +167,11 @@ public class Tab3 extends Fragment {
                         String eventDate = dataObject.get("eventDate").getAsString();
                         String activityId = dataObject.get("activityId").getAsString();
                         String status = "";
-                        listContact.add(new Contact(activityName, eventVenue, eventDate, activityId, status));
+                        listContact.add(new Contact(activityName, eventVenue, eventDate,
+                                activityId, status));
                     }
+
+                    mRecyclerViewAdapter.notifyDataSetChanged();
                 }
 
             } catch(Exception err) {

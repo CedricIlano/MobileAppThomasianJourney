@@ -1,7 +1,9 @@
 package mobile.thomasianJourney.main;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 
 public class MenuPortfolio extends AppCompatActivity {
@@ -36,63 +39,68 @@ public class MenuPortfolio extends AppCompatActivity {
         third = findViewById(R.id.btnyr3);
         fourth = findViewById(R.id.btnyr4);
 
-        //CED SAYO TO HEHEHE
-        String collegeId = "1";
-        String yearLevel = "2";
+        SharedPreferences sharedPreferences = getSharedPreferences("mobile" +
+                ".thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
 
-        final int parsedYear = Integer.parseInt(yearLevel);
-        final String accountId = "1";
+        if (sharedPreferences != null) {
 
-        first.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//            String collegeId =
+//                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, "");
 
-                if(parsedYear >= 1){
-                    Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
-                    i.putExtra("yearLevel", "1");
+            final String yearLevel =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
 
-                    startActivity(i);
-                }else{
-                    Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+            first.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(Integer.parseInt(yearLevel) >= 1){
+                        Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
+                        i.putExtra("yearLevel", "1");
+
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        second.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(parsedYear >= 2){
-                    Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
-                    i.putExtra("yearLevel", "2");
-                    startActivity(i);
-                }else{
-                    Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+            });
+            second.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Integer.parseInt(yearLevel) >= 2){
+                        Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
+                        i.putExtra("yearLevel", "2");
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        third.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(parsedYear >= 3){
-                    Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
-                    i.putExtra("yearLevel", "3");
-                    startActivity(i);
-                }else{
-                    Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+            });
+            third.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Integer.parseInt(yearLevel) >= 3){
+                        Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
+                        i.putExtra("yearLevel", "3");
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        fourth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(parsedYear >= 4){
-                    Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
-                    i.putExtra("yearLevel", "4");
-                    startActivity(i);
-                }else{
-                    Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+            });
+            fourth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Integer.parseInt(yearLevel) >= 4){
+                        Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
+                        i.putExtra("yearLevel", "4");
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         dialog_help = new Dialog(this);
 

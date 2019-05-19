@@ -35,9 +35,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
+            android:name="mobile.thomasianJourney.main.OnBoardActivity"
+            android:label="@string/title_activity_on_board"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity
             android:name="mobile.thomasianJourney.main.GPSActivity"
             android:label="@string/title_activity_gps"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
             android:name="mobile.thomasianJourney.main.MenuPortfolio"
             android:label="View Portfolio"

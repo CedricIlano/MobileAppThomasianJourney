@@ -33,15 +33,33 @@ public class Splash extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("test");
         FirebaseInstanceId.getInstance().getToken();
 
-        Intent intent;
 
-        if (isSharedPreferencesPresent()) {
-            intent = new Intent(Splash.this, HomeActivity.class);
-        } else {
-            intent = new Intent(Splash.this, RegisterFirst.class);
-        }
 
-        startActivity(intent);
+            Thread timer = new Thread() {
+                public void run () {
+                    try {
+                        sleep(5000) ;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+
+                        //final Intent i = new Intent(this,Main2Activity.class);
+                        Intent intent;
+                        if (isSharedPreferencesPresent()) {
+                            intent = new Intent(Splash.this, HomeActivity.class);
+                        } else {
+                            intent = new Intent(Splash.this, RegisterFirst.class);
+                        }
+
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            };
+            timer.start();
+
+
     }
 
     public boolean isSharedPreferencesPresent() {

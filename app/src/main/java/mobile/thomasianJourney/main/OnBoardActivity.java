@@ -1,5 +1,8 @@
 package mobile.thomasianJourney.main;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,9 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import mobile.thomasianJourney.main.home.HomeActivity;
+import mobile.thomasianJourney.main.register.RegisterFirst;
+import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
 
 public class OnBoardActivity extends AppCompatActivity {
@@ -69,10 +75,7 @@ public class OnBoardActivity extends AppCompatActivity {
     }
     public void onfirst()
     {
-        boolean isFirstRun = getSharedPreferences("mobile.thomasianJourney.main" +
-                ".register.USER_CREDENTIALS", MODE_PRIVATE).getBoolean("isFirstRun", true);
-        Log.i("is First run","firstrun = " + isFirstRun);
-        if(isFirstRun) {
+
             //place your dialog code here to dislay the dialog
             LayoutInflater inflater= LayoutInflater.from(this);
             View view=inflater.inflate(R.layout.privacypolicy, null);
@@ -98,15 +101,37 @@ public class OnBoardActivity extends AppCompatActivity {
                                     .edit()
                                     .putBoolean("isFirstRun", false)
                                     .apply(); //
+                            Intent intent;
+                            if (isSharedPreferencesPresent()) {
+                                intent = new Intent(OnBoardActivity.this, HomeActivity.class);
+                            } else {
+                                intent = new Intent(OnBoardActivity.this, RegisterFirst.class);
+                            }
+                            startActivity(intent);
+                            finish();
                         }
                     }).show();
 
 
-        }
+
     }
 
+    public boolean isFirstRun(){
+        boolean isFirstRun = getSharedPreferences("mobile.thomasianJourney.main" +
+                ".register.USER_CREDENTIALS", MODE_PRIVATE).getBoolean("isFirstRun", true);
+        return isFirstRun;
+    }
 
+    public boolean isSharedPreferencesPresent() {
 
+        SharedPreferences sharedPreferences = getSharedPreferences("mobile.thomasianJourney.main" +
+                ".register.USER_CREDENTIALS", Context.MODE_PRIVATE);
+
+        return sharedPreferences.contains(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS) &&
+                sharedPreferences.contains(IntentExtrasAddresses.INTENT_EXTRA_MOBILE_NUMBER) &&
+                sharedPreferences.contains(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID);
+
+    }
 
     public void addDotsIndicator(int position){
 

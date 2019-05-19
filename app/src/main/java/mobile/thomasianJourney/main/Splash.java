@@ -44,22 +44,35 @@ public class Splash extends AppCompatActivity {
                     }
                     finally {
 
-                        //final Intent i = new Intent(this,Main2Activity.class);
                         Intent intent;
-                        if (isSharedPreferencesPresent()) {
-                            intent = new Intent(Splash.this, HomeActivity.class);
-                        } else {
-                            intent = new Intent(Splash.this, RegisterFirst.class);
-                        }
+                        if(!isFirstRun()) {
 
+
+                            if (isSharedPreferencesPresent()) {
+                                intent = new Intent(Splash.this, HomeActivity.class);
+                            } else {
+                                intent = new Intent(Splash.this, RegisterFirst.class);
+                            }
+
+                        }else{
+                            intent = new Intent(Splash.this, OnBoardActivity.class);
+
+                        }
                         startActivity(intent);
                         finish();
+
                     }
                 }
             };
             timer.start();
 
 
+    }
+
+    public boolean isFirstRun(){
+        boolean isFirstRun = getSharedPreferences("mobile.thomasianJourney.main" +
+                ".register.USER_CREDENTIALS", MODE_PRIVATE).getBoolean("isFirstRun", true);
+        return isFirstRun;
     }
 
     public boolean isSharedPreferencesPresent() {

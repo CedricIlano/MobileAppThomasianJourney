@@ -9,6 +9,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,15 +32,23 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import mobile.thomasianJourney.main.EventDetails;
 import mobile.thomasianJourney.main.MainActivity;
 import mobile.thomasianJourney.main.MenuPortfolio;
+import mobile.thomasianJourney.main.OkHttpHandler;
 import mobile.thomasianJourney.main.interfaces.AsyncResponse;
 import mobile.thomasianJourney.main.register.async.StudentDetails;
 import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
+import okhttp3.ConnectionSpec;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -58,7 +69,8 @@ public class HomeActivity extends AppCompatActivity {
     //private String buttons[] ={"streambtn1","streambtn2","streambtn3","button1"};
     private int dates[] ={R.id.streambtn1,R.id.streambtn2,R.id.streambtn3,R.id.button1};
     private int eventnames[] = {R.id.EventName1,R.id.EventName2,R.id.EventName3,R.id.EventName4};
-
+    public String url = "https://thomasianjourney.website/Register/checkEvents";
+    public String[] eventtab = {"false","false","false"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -100,6 +112,16 @@ public class HomeActivity extends AppCompatActivity {
             String studentId =
                     sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID
                     , "");
+            String collegeId =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, "");
+            String yearLevel =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
+
+            OkHttpHandler okHttpHandler = new OkHttpHandler();
+            //DITO PAPASOK YUNG ID NG EVENT SA VIEW EVENTS
+
+
+            okHttpHandler.execute(url, collegeId, yearLevel, studentId);
 
             AsyncResponse asyncResponse = new AsyncResponse() {
                 @Override
@@ -509,8 +531,9 @@ public class HomeActivity extends AppCompatActivity {
 
     public void EventsAnim(View view) {
         if (view == findViewById(R.id.eventId)) {
-            //open viewevents
-            startActivity(new Intent(this, MainActivity.class));
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("eventtab", eventtab);
+            startActivity(i);
             //add animation
 
             Animatoo.animateCard(this);
@@ -600,4 +623,88 @@ public class HomeActivity extends AppCompatActivity {
 
         }
     };
+
+    public class OkHttpHandler extends AsyncTask<String, Void, String> {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.COMPATIBLE_TLS))
+                .build();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("collegeId", params[1])
+                        .addFormDataPart("yearLevel", params[2])
+                        .addFormDataPart("accountId", params[3])
+                        .build();
+
+                Request.Builder builder = new Request.Builder();
+                builder.url(params[0])
+                        .post(requestBody);
+                Request request = builder.build();
+
+                Response response = client.newCall(request).execute();
+
+                System.out.print("Response: " + response.code());
+
+                if (response.isSuccessful()) {
+
+                    return response.body().string();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected void onPostExecute(String s) {
+
+//            if(dialog.isShowing()){
+
+//            }
+//            textView.setText(s);
+            insertList(s);
+//            Toast.makeText(getContext(), ""+s, Toast.LENGTH_SHORT).show();
+
+        }
+    }
+    public void insertList(String s){
+
+
+        if(!TextUtils.isEmpty(s)){
+            try{
+                Gson gson = new Gson();
+
+                JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
+
+                if  (jsonObject.has("data")) {
+                    JsonArray dataArray = jsonObject.get("data").getAsJsonArray();
+                    for (int i = 0 ; i < dataArray.size() ; i++){
+                        eventtab[i] = dataArray.get(i).toString();
+                    }
+                }else{
+
+                }
+
+            }catch(Exception err){
+//                mRecyclerView.setVisibility(View.GONE);
+//                empty = getActivity().findViewById(R.id.empty);
+//                empty.setVisibility(View.VISIBLE);
+//                Toast.makeText(this, year1.length+"HELLO", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+        }
+    }
 }

@@ -2,6 +2,7 @@ package mobile.thomasianJourney.main;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -55,15 +56,47 @@ public class Tab1 extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        View rootView = inflater.inflate(R.layout.tab1, container, false);
-        list = rootView.findViewById(R.id.list1);
-        mRecyclerView = rootView.findViewById(R.id.list1);
+        Intent i = getActivity().getIntent();
 
-        mRecyclerViewAdapter = new RecyclerViewAdapter(getContext(),listContact);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        View rootView;
 
-        return rootView;
+        if (i != null) {
+
+            String[] tabs = i.getStringArrayExtra("eventtab");
+
+            if(tabs != null && tabs[0].equals("true")){
+                rootView = inflater.inflate(R.layout.activity_year1, container, false);
+                SharedPreferences sharedPreferences =
+                        getActivity().getSharedPreferences(rootView.getResources().getString(R.string.shared_preferences_name), Context.MODE_PRIVATE);
+
+                String accountId =
+                        sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
+                String collegeId =
+                        sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_COLLEGE_ID, "");
+
+                String yearLevel =
+                        sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
+
+                Tab1.OkHttpHandler okHttpHandler = new Tab1.OkHttpHandler();
+                okHttpHandler.execute(url, collegeId, yearLevel, accountId);
+
+
+                rootView = inflater.inflate(R.layout.tab1, container, false);
+                list = rootView.findViewById(R.id.list1);
+                mRecyclerView = rootView.findViewById(R.id.list1);
+
+                mRecyclerViewAdapter = new RecyclerViewAdapter(getContext(),listContact);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
+                return rootView;
+            }else{
+                rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+                return rootView;
+            }
+        }
+
+        return null;
     }
 
     @Override

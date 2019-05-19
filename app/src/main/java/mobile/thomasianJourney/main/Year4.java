@@ -65,6 +65,16 @@ public class Year4 extends Fragment {
             View rootView  = inflater.inflate(R.layout.activity_year1, container, false);;
             if(tabs != null && tabs[3].equals("false")){
                 rootView = inflater.inflate(R.layout.activity_year1, container, false);
+                SharedPreferences sharedPreferences =
+                        getActivity().getSharedPreferences(rootView.getResources().getString(R.string.shared_preferences_name), Context.MODE_PRIVATE);
+                String eventClass = "4";
+
+                String accountId =
+                        sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
+
+                OkHttpHandler okHttpHandler = new OkHttpHandler();
+
+                okHttpHandler.execute(url, accountId, eventClass, yearLevel);
                 list = rootView.findViewById(R.id.list2);
                 mRecyclerView = rootView.findViewById(R.id.list2);
 
@@ -75,6 +85,7 @@ public class Year4 extends Fragment {
                 return rootView;
             }else{
                 rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+                return rootView;
             }
         }
 
@@ -101,7 +112,7 @@ public class Year4 extends Fragment {
                     String accountId =
                             sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 
-                    Year4.OkHttpHandler okHttpHandler = new Year4.OkHttpHandler();
+                    OkHttpHandler okHttpHandler = new OkHttpHandler();
 
                     okHttpHandler.execute(url, accountId, eventClass, yearLevel);
                 }

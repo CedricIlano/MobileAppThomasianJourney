@@ -1,14 +1,19 @@
 package mobile.thomasianJourney.main;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +24,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.util.Arrays;
+
 import mobile.thomasianJourney.main.register.utils.IntentExtrasAddresses;
 import mobile.thomasianJourney.main.vieweventsfragments.R;
+import okhttp3.ConnectionSpec;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MenuPortfolio extends AppCompatActivity {
     Button first, second, third, fourth;
@@ -30,6 +47,13 @@ public class MenuPortfolio extends AppCompatActivity {
     Animation animationUp, animationUp1, animationUp2, animationUp3, animationUp4,animationUp5, animationUp6;
     Animation animationDown, animationDown1, animationDown2, animationDown3, animationDown4, animationDown5, animationDown6 ;
 
+    public String[] year1 = {"true","true","true","true"};
+    public String[] year2 = {"true","true","true","true"};
+    public String[] year3 = {"true","true","true","true"};
+    public String[] year4 = {"true","true","true","true"};
+    public ProgressDialog dialog;
+    public String url = "https://thomasianjourney.website/Register/checkPortfolio";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +62,7 @@ public class MenuPortfolio extends AppCompatActivity {
         second = findViewById(R.id.btnyr2);
         third = findViewById(R.id.btnyr3);
         fourth = findViewById(R.id.btnyr4);
+        dialog = new ProgressDialog(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("mobile" +
                 ".thomasianJourney.main.register.USER_CREDENTIALS", Context.MODE_PRIVATE);
@@ -49,6 +74,11 @@ public class MenuPortfolio extends AppCompatActivity {
 
             final String yearLevel =
                     sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
+            OkHttpHandler okHttpHandler = new OkHttpHandler();
+
+            String accountId =
+                    sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
+            okHttpHandler.execute(url, accountId);
 
             first.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,7 +87,7 @@ public class MenuPortfolio extends AppCompatActivity {
                     if(Integer.parseInt(yearLevel) >= 1){
                         Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
                         i.putExtra("yearLevel", "1");
-
+                        i.putExtra("emptytab1", year1);
                         startActivity(i);
                     }else{
                         Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
@@ -70,6 +100,7 @@ public class MenuPortfolio extends AppCompatActivity {
                     if(Integer.parseInt(yearLevel) >= 2){
                         Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
                         i.putExtra("yearLevel", "2");
+                        i.putExtra("emptytab2", year2);
                         startActivity(i);
                     }else{
                         Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
@@ -82,6 +113,7 @@ public class MenuPortfolio extends AppCompatActivity {
                     if(Integer.parseInt(yearLevel) >= 3){
                         Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
                         i.putExtra("yearLevel", "3");
+                        i.putExtra("emptytab3", year3);
                         startActivity(i);
                     }else{
                         Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
@@ -94,6 +126,7 @@ public class MenuPortfolio extends AppCompatActivity {
                     if(Integer.parseInt(yearLevel) >= 4){
                         Intent i = new Intent(MenuPortfolio.this, Portfolio.class);
                         i.putExtra("yearLevel", "4");
+                        i.putExtra("emptytab4", year4);
                         startActivity(i);
                     }else{
                         Toast.makeText(MenuPortfolio.this, "Not Yet Available", Toast.LENGTH_SHORT).show();
@@ -297,5 +330,105 @@ public class MenuPortfolio extends AppCompatActivity {
         dialog_help.show();
 
 
+    }
+
+    public class OkHttpHandler extends AsyncTask<String, Void, String> {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.COMPATIBLE_TLS))
+                .build();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Loading...");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("accountId", params[1])
+                        .build();
+
+                Request.Builder builder = new Request.Builder();
+                builder.url(params[0])
+                        .post(requestBody);
+                Request request = builder.build();
+
+                Response response = client.newCall(request).execute();
+
+                System.out.print("Response: " + response.code());
+
+                if (response.isSuccessful()) {
+
+                    return response.body().string();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected void onPostExecute(String s) {
+
+//            if(dialog.isShowing()){
+            dialog.dismiss();
+//            }
+//            textView.setText(s);
+            insertList(s);
+//            Toast.makeText(getContext(), ""+s, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void insertList(String s){
+        dialog.dismiss();
+
+        if(!TextUtils.isEmpty(s)){
+            try{
+                Gson gson = new Gson();
+
+                JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
+
+                if  (jsonObject.has("data")) {
+
+                    JsonArray dataArray = jsonObject.get("data").getAsJsonArray();
+                    for (int i = 0 ; i < dataArray.size() ; i++){
+                        String[] temp = new String[4];
+                        JsonArray stringArray = dataArray.get(i).getAsJsonArray();
+                        for(int j = 0 ; j < stringArray.size() ; j++){
+
+                            String data = stringArray.get(j).toString();
+                            temp[j] = data;
+                        }
+                        if(i == 0){
+                            year1 = temp;
+                        }else if(i == 1){
+                            year2 = temp;
+                        }else if(i == 2){
+                            year3 = temp;
+                        }else if(i == 3){
+                            year4 = temp;
+                        }
+                    }
+                }else{
+
+                }
+
+            }catch(Exception err){
+//                mRecyclerView.setVisibility(View.GONE);
+//                empty = getActivity().findViewById(R.id.empty);
+//                empty.setVisibility(View.VISIBLE);
+//                Toast.makeText(this, year1.length+"HELLO", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+        }
     }
 }

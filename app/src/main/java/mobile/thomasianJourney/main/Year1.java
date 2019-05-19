@@ -43,9 +43,7 @@ public class Year1 extends Fragment {
     //    private List<> mList;
     RecyclerView list;
     private RecyclerViewAdapterPort mRecyclerViewAdapter;
-    String dates [] = {"Jan 01", "Jan 02", "Jan 14", "Feb 03", "Feb 14", "Feb 30", "Mar 03", "Mar 05"};
-    String titles[] = {"Title One", "Title Two", "Title Three", "Title Four","Title Five","Title Six","Title Seven","Title Eight"};
-    String descriptions[] = {"Description One...", "Description Two...", "Description Three...", "Description Four...","Description Five...","Description Six...","Description Seven...","Description Eight..."};
+
     public String url = "https://thomasianjourney.website/Register/portfolioInfo";
 
     public List<Contact> listContact = new ArrayList<>();
@@ -68,6 +66,17 @@ public class Year1 extends Fragment {
             View rootView;
             if(tabs != null && tabs[0].equals("false")){
                 rootView = inflater.inflate(R.layout.activity_year1, container, false);
+                SharedPreferences sharedPreferences =
+                        getActivity().getSharedPreferences(rootView.getResources().getString(R.string.shared_preferences_name), Context.MODE_PRIVATE);
+                String eventClass = "1";
+
+                String accountId =
+                        sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
+
+                OkHttpHandler okHttpHandler = new OkHttpHandler();
+
+                okHttpHandler.execute(url, accountId, eventClass, yearLevel);
+
                 list = rootView.findViewById(R.id.list2);
                 mRecyclerView = rootView.findViewById(R.id.list2);
 
@@ -78,6 +87,7 @@ public class Year1 extends Fragment {
                 return rootView;
             }else{
                 rootView = inflater.inflate(R.layout.activity_emptytab, container, false);
+                return rootView;
             }
         }
 

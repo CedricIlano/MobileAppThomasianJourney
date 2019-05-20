@@ -45,14 +45,24 @@ public class VerLoginCredSuc extends AppCompatActivity {
     public String url = "https://thomasianjourney.website/Register/insertAttended";
     Dialog dialog_errorqr;
     Button okbtn;
-    TextView titleErrorQR, exErrorRQ;
+    TextView titleErrorQR, exErrorRQ, email;
     ImageView closeDialogErrorQR, imageErrorQR;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_login_cred_suc);
         Lottie();
+
+        SharedPreferences sharedPreferences =
+                getSharedPreferences(getString(R.string.shared_preferences_name),
+                        Context.MODE_PRIVATE);
+
+        String email1 =
+                sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, "");
+
+//        email.setText(email1);
 
         contscanbtn = findViewById(R.id.contscanbtn);
         final Activity activity = this;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,12 +146,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 break;
             case "upcoming":
                 myViewHolder.attended.setText("Event Not Yet Available");
-                //Dito mo fix yung color
                 myViewHolder.attended.setTextColor(Color.parseColor("#FF8C00"));
                 break;
             case "available":
                 myViewHolder.attended.setText("Event Available");
-                //Dito mo fix yung color
                 myViewHolder.attended.setTextColor(Color.parseColor("#008000"));
                 break;
             case "cancelled":
@@ -175,6 +174,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             default:
                 myViewHolder.attended.setText("Attended");
                 myViewHolder.item_contact.setClickable(false);
+                myViewHolder.attended.setAllCaps(true);
                 myViewHolder.date.setClickable(false);
                 myViewHolder.attended.setTextColor(Color.parseColor("#008000"));
                 myViewHolder.item_contact.setOnClickListener(new View.OnClickListener() {

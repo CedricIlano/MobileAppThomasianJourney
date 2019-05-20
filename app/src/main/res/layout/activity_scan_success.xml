@@ -57,20 +57,20 @@
             android:textColor="#000000"
             android:textSize="13sp"
             android:fontFamily="@font/poppinsmedium"
-            android:text="Your attendance has been recorded using"
+            android:text="Your attendance has been recorded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <!--<TextView-->
 
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="13sp"
-            android:fontFamily="@font/poppinssemibold"
-            android:text="patriciamae.ramos.iics@ust.edu.ph account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="#000000"-->
+            <!--android:textSize="13sp"-->
+            <!--android:fontFamily="@font/poppinssemibold"-->
+            <!--android:text="patriciamae.ramos.iics@ust.edu.ph account"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

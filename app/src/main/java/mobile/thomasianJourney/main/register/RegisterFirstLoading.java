@@ -98,10 +98,11 @@ public class RegisterFirstLoading extends AppCompatActivity {
 					JsonObject dataObject = jsonObject.get("data").getAsJsonObject();
 
 					if (dataObject != null) {
-						if (dataObject.has("studEmail") && dataObject.has("studMobileNumber") && dataObject.has("studentsId")) {
-							String emailAddress = dataObject.get("studEmail").getAsString();
-							String mobileNumber = dataObject.get("studMobileNumber").getAsString();
-							int studentsId = dataObject.get("studentsId").getAsInt();
+						if (dataObject.has("studregEmail") && dataObject.has("studregmobileNum") && dataObject.has("studregId")) {
+							String emailAddress = dataObject.get("studregEmail").getAsString();
+							String mobileNumber =
+									dataObject.get("studregmobileNum").getAsString();
+							int studentsId = dataObject.get("studregId").getAsInt();
 
 							Intent intent = new Intent(RegisterFirstLoading.this, RegisterSecond.class);
 							intent.putExtra(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, emailAddress);

@@ -172,7 +172,7 @@ public class Tab2 extends Fragment {
                         String activityName = dataObject.get("activityName").getAsString();
                         String eventDate = dataObject.get("eventDate").getAsString();
                         String activityId = dataObject.get("activityId").getAsString();
-                        String status = "";
+                        String status = "upcoming";
 
                         listContact.add(new Contact(activityName, eventVenue, eventDate, activityId, status));
                     }

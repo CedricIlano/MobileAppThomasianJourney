@@ -96,8 +96,8 @@ public class RegisterFirstLoading extends AppCompatActivity {
 				if (jsonObject.has("data")) {
 
 					JsonObject dataObject = jsonObject.get("data").getAsJsonObject();
-
-					if (dataObject != null) {
+					String message = jsonObject.get("message").getAsString();
+					if (!message.equals("Account already exists")) {
 						if (dataObject.has("studregEmail") && dataObject.has("studregmobileNum") && dataObject.has("studregId")) {
 							String emailAddress = dataObject.get("studregEmail").getAsString();
 							String mobileNumber =
@@ -119,7 +119,7 @@ public class RegisterFirstLoading extends AppCompatActivity {
 							finish();
 						}
 					} else {
-						Toast.makeText(this, "No data found. Please try again",
+						Toast.makeText(this, "Account already exists",
 								Toast.LENGTH_SHORT).show();
 						Intent intent = new Intent(RegisterFirstLoading.this, RegisterFirst.class);
 						startActivity(intent);

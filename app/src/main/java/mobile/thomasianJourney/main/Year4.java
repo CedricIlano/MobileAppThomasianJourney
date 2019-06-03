@@ -107,8 +107,9 @@ public class Year4 extends Fragment {
 
             if (sharedPreferences != null) {
                 if (i != null) {
-                    String eventClass = "1";
-                    String yearLevel = i.getStringExtra("yearLevel");
+                    String eventClass = "4";
+                    String yearLevel =
+                            sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
                     String accountId =
                             sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 

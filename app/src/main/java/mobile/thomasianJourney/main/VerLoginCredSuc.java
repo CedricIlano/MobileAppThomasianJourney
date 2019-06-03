@@ -48,6 +48,15 @@ public class VerLoginCredSuc extends AppCompatActivity {
     TextView titleErrorQR, exErrorRQ, email;
     ImageView closeDialogErrorQR, imageErrorQR;
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        SharedPreferences settings =
+                getSharedPreferences("mobile.thomasianJourney.main.register" + ".USER_CREDENTIALS",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +68,7 @@ public class VerLoginCredSuc extends AppCompatActivity {
                 getSharedPreferences(getString(R.string.shared_preferences_name),
                         Context.MODE_PRIVATE);
 
-        String email1 =
+//        String email1 =
                 sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_EMAIL_ADDRESS, "");
 
 //        email.setText(email1);

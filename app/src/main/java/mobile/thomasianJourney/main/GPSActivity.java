@@ -34,12 +34,13 @@ public class GPSActivity extends AppCompatActivity {
     private Dialog dlg;
     private ImageView closeButton;
     private Button scanagain;
+
     public double defaultLongitude =  120.989498;
     public double defaultLatitude = 14.609882;
     //    14.580826, 121.085796
     //public double defaultLongitude =  121.085796;
     //public double defaultLatitude = 14.580826;
-    public double ScopeRadiusMeters = 5000;
+    public double ScopeRadiusMeters = 336;
     Intent intent;
 
     private Button b;
@@ -75,7 +76,8 @@ public class GPSActivity extends AppCompatActivity {
                 isAccept = true;
                 if(!isAccept){
                     errorlocation();
-                    onPause();
+
+           onPause();
 
                 }else{
                     //Toast.makeText(GPSActivate.this,"Acceptable = "+ isAccept , Toast.LENGTH_LONG).show();
@@ -94,6 +96,7 @@ public class GPSActivity extends AppCompatActivity {
 
                 //14.606364, 121.121967
             }
+
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
@@ -138,9 +141,11 @@ public class GPSActivity extends AppCompatActivity {
         }catch(Exception err){
             err.printStackTrace();
         }
+
         scanagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(GPSActivity.this, GPSActivity.class);
                 startActivity(i);
                 finish();

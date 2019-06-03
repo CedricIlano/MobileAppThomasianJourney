@@ -94,6 +94,7 @@ public class SlideAdapter extends PagerAdapter {
         if(position == 4){
             obconbutton.setVisibility(View.VISIBLE);
         }else{
+
             obconbutton.setVisibility(View.INVISIBLE);
         }
         container.addView(view);

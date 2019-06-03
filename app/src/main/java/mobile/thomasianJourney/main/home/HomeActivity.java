@@ -363,6 +363,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        SharedPreferences settings = getSharedPreferences("mobile.thomasianJourney.main.register" +
+                ".USER_CREDENTIALS",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.commit();
+    }
+
 
 
 //    public void showDialogHelp() {

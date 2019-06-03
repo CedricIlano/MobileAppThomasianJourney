@@ -113,7 +113,8 @@ public class Year2 extends Fragment {
             if (sharedPreferences != null) {
                 if (i != null) {
                     String eventClass = "2";
-                    String yearLevel = i.getStringExtra("yearLevel");
+                    String yearLevel =
+                            sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENT_YEAR_LEVEL_ID, "");
                     String accountId =
                             sharedPreferences.getString(IntentExtrasAddresses.INTENT_EXTRA_STUDENTS_ID, "");
 
@@ -175,6 +176,7 @@ public class Year2 extends Fragment {
         protected void onPostExecute(String s) {
 
 //            if(dialog.isShowing()){
+
             dialog.dismiss();
 //            }
 //            textView.setText(s);
